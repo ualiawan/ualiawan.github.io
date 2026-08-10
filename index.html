@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usman Ali — Computer Vision &amp; AI Engineer</title>
+<meta name="description" content="Computer vision engineer with 9+ years shipping perception systems: 3D reconstruction, segmentation, depth estimation and real-time deployment on embedded hardware. Currently technical lead on agricultural AI programmes at Track32 in the Netherlands.">
+<meta name="author" content="Usman Ali">
+<link rel="canonical" href="https://ualiawan.github.io/">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Usman Ali — Computer Vision &amp; AI Engineer">
+<meta property="og:description" content="9+ years turning perception research into systems that run in the field: 3D reconstruction, segmentation, depth, and real-time inference on embedded hardware.">
+<meta property="og:url" content="https://ualiawan.github.io/">
+<meta property="og:image" content="https://ualiawan.github.io/assets/usman-ali.jpg">
+<meta name="twitter:card" content="summary">
+
+<!-- Emoji favicon, fully percent-encoded so no raw angle brackets sit inside an attribute. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+
+<style>
+/* ---------------------------------------------------------------- tokens */
+:root{
+  color-scheme: light;
+
+  --bg:            #fbfbfa;
+  --bg-raised:     #ffffff;
+  --bg-sunken:     #f2f2f0;
+  --ink:           #16161a;
+  --ink-soft:      #45464e;
+  --ink-faint:     #74757f;
+  --rule:          #e3e3e0;
+  --rule-strong:   #cfcfcb;
+  --accent:        #26418f;
+  --accent-soft:   #eaeefb;
+  --accent-ink:    #1b2f69;
+  --shadow:        0 1px 2px rgba(20,20,30,.05), 0 8px 24px -12px rgba(20,20,30,.14);
+
+  --measure:       68ch;
+  --page:          1080px;
+  --radius:        10px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+          "Liberation Mono", monospace;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:          #101116;
+    --bg-raised:   #171922;
+    --bg-sunken:   #0b0c10;
+    --ink:         #eceef4;
+    --ink-soft:    #b3b7c4;
+    --ink-faint:   #83879a;
+    --rule:        #262935;
+    --rule-strong: #363a4a;
+    --accent:      #9db4ff;
+    --accent-soft: #1b2038;
+    --accent-ink:  #c5d2ff;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:          #101116;
+  --bg-raised:   #171922;
+  --bg-sunken:   #0b0c10;
+  --ink:         #eceef4;
+  --ink-soft:    #b3b7c4;
+  --ink-faint:   #83879a;
+  --rule:        #262935;
+  --rule-strong: #363a4a;
+  --accent:      #9db4ff;
+  --accent-soft: #1b2038;
+  --accent-ink:  #c5d2ff;
+  --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 30px -14px rgba(0,0,0,.7);
+}
+
+/* ----------------------------------------------------------------- reset */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition:none !important; animation:none !important; }
+}
+img{ max-width:100%; display:block; }
+a{ color:var(--accent); text-decoration:none; }
+a:hover{ text-decoration:underline; text-underline-offset:2px; }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:4px; }
+h1,h2,h3,h4{ line-height:1.2; margin:0; letter-spacing:-.015em; font-weight:650; }
+p{ margin:0 0 1em; }
+ul{ margin:0; padding:0; list-style:none; }
+
+.wrap{ max-width:var(--page); margin:0 auto; padding:0 clamp(20px,5vw,44px); }
+.skip{
+  position:absolute; left:-9999px; top:0; background:var(--bg-raised);
+  padding:10px 16px; border-radius:0 0 var(--radius) 0; z-index:99;
+}
+.skip:focus{ left:0; }
+
+/* ---------------------------------------------------------------- header */
+.topbar{
+  position:sticky; top:0; z-index:20;
+  background:var(--bg);                                      /* fallback */
+  background:color-mix(in srgb, var(--bg) 88%, transparent); /* progressive */
+  backdrop-filter:saturate(1.4) blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.topbar-in{
+  display:flex; align-items:center; gap:20px;
+  min-height:56px;
+}
+.brand{
+  font-weight:700; letter-spacing:.02em; color:var(--ink);
+  font-size:.95rem; white-space:nowrap;
+}
+.brand:hover{ text-decoration:none; }
+.brand span{ color:var(--ink-faint); font-weight:500; }
+.nav{ display:flex; gap:6px; margin-left:auto; align-items:center; }
+.nav a{
+  color:var(--ink-soft); font-size:.88rem; padding:7px 11px;
+  border-radius:7px; white-space:nowrap;
+}
+.nav a:hover{ background:var(--bg-sunken); color:var(--ink); text-decoration:none; }
+@media (max-width:820px){ .nav a.opt{ display:none; } }
+@media (max-width:520px){ .nav a{ display:none; } }
+
+.themebtn{
+  appearance:none; border:1px solid var(--rule-strong); background:var(--bg-raised);
+  color:var(--ink-soft); width:34px; height:34px; border-radius:8px; cursor:pointer;
+  display:grid; place-items:center; font-size:15px; line-height:1; flex:none;
+}
+.themebtn:hover{ color:var(--ink); border-color:var(--ink-faint); }
+
+/* ------------------------------------------------------------------ hero */
+.hero{ padding:clamp(48px,8vw,88px) 0 clamp(36px,5vw,52px); }
+.hero-grid{
+  display:grid; grid-template-columns:minmax(0,1fr) 168px;
+  gap:clamp(28px,5vw,56px); align-items:start;
+}
+@media (max-width:720px){
+  .hero-grid{ grid-template-columns:1fr; gap:28px; }
+  .portrait{ order:-1; width:120px; }
+}
+.eyebrow{
+  font-family:var(--mono); font-size:.76rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 14px;
+  display:flex; align-items:center; gap:9px;
+}
+.eyebrow::after{ content:""; height:1px; flex:1; background:var(--rule-strong); }
+h1{ font-size:clamp(2.2rem,6.4vw,3.5rem); font-weight:700; letter-spacing:-.03em; }
+.role{
+  font-size:clamp(1.05rem,2.6vw,1.32rem); color:var(--ink-soft);
+  font-weight:500; margin:.5em 0 1.1em; letter-spacing:-.01em;
+}
+.lede{ max-width:var(--measure); color:var(--ink-soft); font-size:1.03rem; }
+.lede strong{ color:var(--ink); font-weight:600; }
+
+.portrait{
+  border-radius:var(--radius); overflow:hidden; border:1px solid var(--rule);
+  box-shadow:var(--shadow); background:var(--bg-sunken);
+}
+.portrait img{ aspect-ratio:1/1.12; object-fit:cover; width:100%; }
+
+.cta{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:9px 15px; border-radius:8px; font-size:.9rem; font-weight:550;
+  border:1px solid var(--rule-strong); background:var(--bg-raised);
+  color:var(--ink); transition:border-color .15s, background .15s;
+}
+.btn:hover{ text-decoration:none; border-color:var(--ink-faint); background:var(--bg-sunken); }
+/* --bg flips with the theme, so this one rule stays legible in both:
+   near-white on dark navy in light mode, near-black on periwinkle in dark mode. */
+.btn-primary{
+  background:var(--accent); border-color:var(--accent); color:var(--bg);
+}
+.btn-primary:hover{ filter:brightness(1.08); background:var(--accent); border-color:var(--accent); }
+.btn svg{ width:15px; height:15px; flex:none; }
+
+/* --------------------------------------------------------------- section */
+section{ padding:clamp(40px,6vw,64px) 0; border-top:1px solid var(--rule); }
+.sec-head{ margin-bottom:34px; }
+.sec-num{
+  font-family:var(--mono); font-size:.74rem; color:var(--ink-faint);
+  letter-spacing:.12em; display:block; margin-bottom:8px;
+}
+h2{ font-size:clamp(1.35rem,3.4vw,1.75rem); }
+.sec-sub{ color:var(--ink-faint); margin:.7em 0 0; max-width:var(--measure); font-size:.96rem; }
+
+/* ------------------------------------------------------------ capability */
+.cards{
+  display:grid; gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(238px,1fr));
+}
+.card{
+  background:var(--bg-raised); border:1px solid var(--rule);
+  border-radius:var(--radius); padding:22px;
+}
+.card h3{ font-size:1rem; margin-bottom:9px; }
+.card p{ color:var(--ink-soft); font-size:.92rem; margin:0; }
+.card .ic{
+  width:32px; height:32px; border-radius:8px; background:var(--accent-soft);
+  color:var(--accent); display:grid; place-items:center; margin-bottom:14px;
+}
+.card .ic svg{ width:17px; height:17px; }
+
+/* ------------------------------------------------------------- timeline */
+.tl{ display:grid; gap:0; }
+.tl-item{
+  display:grid; grid-template-columns:150px minmax(0,1fr);
+  gap:clamp(16px,3vw,34px);
+  padding:24px 0; border-top:1px solid var(--rule);
+}
+.tl-item:first-child{ border-top:0; padding-top:0; }
+@media (max-width:700px){
+  .tl-item{ grid-template-columns:1fr; gap:10px; }
+}
+.tl-when{
+  font-family:var(--mono); font-size:.8rem; color:var(--ink-faint);
+  letter-spacing:.02em; padding-top:.28em;
+}
+.tl-when em{ display:block; font-style:normal; color:var(--accent); font-size:.74rem; margin-top:3px; letter-spacing:.06em; text-transform:uppercase; }
+.tl-role{ font-size:1.06rem; font-weight:640; }
+.tl-org{ color:var(--ink-soft); font-size:.93rem; margin:2px 0 12px; }
+.tl-org a{ color:var(--ink-soft); border-bottom:1px solid var(--rule-strong); }
+.tl-org a:hover{ color:var(--accent); text-decoration:none; border-color:var(--accent); }
+.tl-body li{
+  position:relative; padding-left:19px; margin-bottom:8px;
+  color:var(--ink-soft); font-size:.945rem;
+}
+.tl-body li::before{
+  content:""; position:absolute; left:2px; top:.62em;
+  width:5px; height:5px; border-radius:50%; background:var(--rule-strong);
+}
+.tl-body li:last-child{ margin-bottom:0; }
+
+/* --------------------------------------------------------------- chips */
+.chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+.chip{
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.01em;
+  padding:3px 8px; border-radius:5px;
+  background:var(--bg-sunken); border:1px solid var(--rule);
+  color:var(--ink-faint); white-space:nowrap;
+}
+
+/* -------------------------------------------------------------- projects */
+.projects{ display:grid; gap:18px; }
+.proj{
+  background:var(--bg-raised); border:1px solid var(--rule);
+  border-radius:var(--radius); padding:clamp(20px,3vw,28px);
+  transition:border-color .15s;
+}
+.proj:hover{ border-color:var(--rule-strong); }
+.proj-top{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px;
+  margin-bottom:5px;
+}
+.proj-top h3{ font-size:1.07rem; }
+.proj-when{
+  font-family:var(--mono); font-size:.76rem; color:var(--ink-faint);
+  margin-left:auto; white-space:nowrap;
+}
+.proj-ctx{
+  color:var(--accent); font-size:.83rem; font-weight:550;
+  margin:0 0 12px; letter-spacing:.005em;
+}
+.proj p.d{ color:var(--ink-soft); font-size:.945rem; margin:0; max-width:74ch; }
+
+/* ---------------------------------------------------------------- skills */
+.skills{ display:grid; gap:0; }
+.skillrow{
+  display:grid; grid-template-columns:186px minmax(0,1fr);
+  gap:clamp(14px,3vw,28px);
+  padding:16px 0; border-top:1px solid var(--rule);
+  align-items:baseline;
+}
+.skillrow:first-child{ border-top:0; padding-top:0; }
+@media (max-width:640px){ .skillrow{ grid-template-columns:1fr; gap:8px; } }
+.skillrow dt{ font-weight:600; font-size:.93rem; }
+.skillrow dd{ margin:0; color:var(--ink-soft); font-size:.93rem; }
+
+/* ------------------------------------------------------------------ pubs */
+.pubs{ display:grid; gap:0; }
+.pub{
+  display:grid; grid-template-columns:78px minmax(0,1fr);
+  gap:clamp(12px,3vw,26px);
+  padding:18px 0; border-top:1px solid var(--rule);
+}
+.pub:first-child{ border-top:0; padding-top:0; }
+@media (max-width:640px){ .pub{ grid-template-columns:1fr; gap:6px; } }
+.pub-year{ font-family:var(--mono); font-size:.8rem; color:var(--ink-faint); padding-top:.2em; }
+.pub-title{ font-size:.98rem; font-weight:580; margin-bottom:4px; }
+.pub-meta{ color:var(--ink-faint); font-size:.87rem; }
+.pub-meta .venue{ color:var(--ink-soft); font-style:italic; }
+.pub-meta .me{ color:var(--ink); font-weight:600; font-style:normal; }
+.badge{
+  display:inline-block; font-family:var(--mono); font-size:.68rem;
+  letter-spacing:.06em; text-transform:uppercase;
+  padding:1px 6px; border-radius:4px; margin-left:8px;
+  background:var(--accent-soft); color:var(--accent); vertical-align:1px;
+}
+
+/* --------------------------------------------------------------- contact */
+.contact{
+  background:var(--bg-raised); border:1px solid var(--rule);
+  border-radius:var(--radius); padding:clamp(26px,4vw,40px);
+  display:grid; gap:22px; grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+}
+@media (max-width:720px){ .contact{ grid-template-columns:1fr; } }
+.contact h2{ margin-bottom:.4em; }
+.contact p{ color:var(--ink-soft); margin:0; max-width:52ch; font-size:.96rem; }
+.contact .cta{ margin:0; }
+
+footer{
+  border-top:1px solid var(--rule); padding:28px 0 44px;
+  color:var(--ink-faint); font-size:.84rem;
+}
+footer .wrap{ display:flex; flex-wrap:wrap; gap:12px 24px; align-items:center; }
+footer a{ color:var(--ink-faint); }
+footer a:hover{ color:var(--accent); }
+footer .spacer{ margin-left:auto; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top">Usman Ali <span>/ Computer Vision</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#experience">Experience</a>
+      <a href="#work">Work</a>
+      <a href="#skills" class="opt">Skills</a>
+      <a href="#publications" class="opt">Publications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="themebtn" id="theme" type="button" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ================================================================ hero -->
+<div class="hero wrap" id="top">
+  <div class="hero-grid">
+    <div>
+      <p class="eyebrow">The Netherlands</p>
+      <h1>Usman Ali</h1>
+      <p class="role">Computer Vision &amp; AI Engineer — 3D perception, deep learning, edge deployment</p>
+      <p class="lede">
+        I have spent <strong>9+ years</strong> turning perception research into systems that
+        actually run somewhere: on tractors pulling implements through a field, on carts
+        rolling down greenhouse aisles, on embedded GPUs, on phones. I take problems end to
+        end — choosing the sensors, capturing and curating the data, training the models,
+        making inference fast enough to be useful, and building the services and apps around it.
+      </p>
+      <p class="lede">
+        Currently technical lead on agricultural AI programmes at
+        <a href="https://www.track32.nl/">Track32</a>, working directly with machinery
+        manufacturers, plant breeders and growers across Europe.
+      </p>
+
+      <div class="cta">
+        <!-- This button removes itself if docs/usman-ali-cv.pdf is not present, so the
+             site never ships a 404 on its primary action. To turn it on for good:
+               cd UsmanAliResumeLaTeX && lualatex cv.tex && lualatex cv.tex
+               cp cv.pdf ../docs/usman-ali-cv.pdf
+             then commit the PDF. No HTML change needed. -->
+        <a class="btn btn-primary" href="usman-ali-cv.pdf" id="cvlink" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CV
+        </a>
+        <a class="btn" href="https://www.linkedin.com/in/ualiawan">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM2 9h6v13H2zM10 9h5.7v1.8h.1c.8-1.3 2.5-2.2 4.3-2.2 3.4 0 4.9 2 4.9 5.7V22h-6v-6.4c0-1.6-.6-2.6-2-2.6-1.2 0-1.9.8-2.2 1.6-.1.3-.1.7-.1 1.1V22h-6z"/></svg>
+          LinkedIn
+        </a>
+        <a class="btn" href="https://github.com/ualiawan">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7 0-.7 0-.7 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.4 3.6 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6a4.7 4.7 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .2-3.2s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.7 18.4 5 18.4 5a4.3 4.3 0 0 1 .2 3.2 4.7 4.7 0 0 1 1.2 3.2c0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></svg>
+          GitHub
+        </a>
+        <a class="btn" href="https://www.upwork.com/freelancers/~01cc91a4534c0c1d1a">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13a5 5 0 1 0-5-5c0 3-1.5 5-4 5s-4-2-4-5"/><line x1="5" y1="8" x2="5" y2="20"/></svg>
+          Upwork
+        </a>
+        <a class="btn" href="mailto:aliusman.awaan@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+          Email
+        </a>
+      </div>
+    </div>
+
+    <div class="portrait">
+      <img src="assets/usman-ali.jpg" width="336" height="376" alt="Portrait of Usman Ali">
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= capability -->
+<section id="focus">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01 — What I work on</span>
+      <h2>Four things I keep coming back to</h2>
+      <p class="sec-sub">
+        Different domains, same underlying problem: getting a machine to understand
+        the geometry and state of a messy scene, fast enough and reliably enough
+        that something can act on it.
+      </p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+        <h3>3D reconstruction &amp; geometry</h3>
+        <p>NeRF and SLAM reconstruction, multi-view calibration, point-cloud
+        registration and merging, and turning the result into measurements someone
+        can trust.</p>
+      </article>
+
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg></div>
+        <h3>Segmentation, detection &amp; depth</h3>
+        <p>Transformer and CNN models for dense scene understanding, small-object
+        counting at high resolution, monocular and stereo depth, optical flow.</p>
+      </article>
+
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></div>
+        <h3>Real-time &amp; embedded inference</h3>
+        <p>ONNX and TensorRT pipelines on NVIDIA Jetson, Hailo NPU conversion,
+        CoreML on phones, ROS2 integration, and the profiling work that gets a
+        model inside its latency budget.</p>
+      </article>
+
+      <article class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 3 0 1 0 18 0 9 3 0 1 0-18 0"/><path d="M3 12v6a9 3 0 0 0 18 0v-6"/><path d="M3 6a9 3 0 1 0 18 0 9 3 0 1 0-18 0"/></svg></div>
+        <h3>The system around the model</h3>
+        <p>Capture rigs and recording apps, dataset versioning and benchmarking,
+        job queues and APIs, automated QA reporting. Most of what makes a vision
+        product work is not the network.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================== experience -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02 — Experience</span>
+      <h2>Where I have done it</h2>
+    </div>
+
+    <div class="tl">
+      <article class="tl-item">
+        <div class="tl-when">Jun 2023 — present<em>Current</em></div>
+        <div>
+          <h3 class="tl-role">Computer Vision &amp; AI Engineer</h3>
+          <p class="tl-org"><a href="https://www.track32.nl/">Track32</a> · Netherlands</p>
+          <ul class="tl-body">
+            <li>Technical lead on the company's largest perception programme: real-time
+            detection of tine blockage, soil accumulation and tool damage on an autonomous
+            field cultivator, running at 15 fps on an embedded Jetson and demonstrated to
+            customers at a major agricultural machinery trade fair.</li>
+            <li>Designed and built a 3D plant phenotyping platform end to end — reconstruction,
+            registration, segmentation, trait extraction — served as an asynchronous job
+            service behind a FastAPI gateway.</li>
+            <li>Delivered greenhouse and open-field vision products for plant breeders,
+            propagators and commercial growers, owning each from sensor choice through to
+            automated reporting in the client's data platform.</li>
+            <li>Introduced experiment tracking, dataset versioning and model benchmarking;
+            re-benchmarking one production classifier against expert-voted ground truth on a
+            30,500-image test set measured 88% accuracy against the incumbent's 80%.</li>
+            <li>Technical counterpart for clients and German/EU research consortia; supervise
+            MSc interns and thesis students.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">Python</span><span class="chip">C++</span>
+            <span class="chip">PyTorch</span><span class="chip">TensorRT</span>
+            <span class="chip">ONNX</span><span class="chip">ROS2</span>
+            <span class="chip">Jetson</span><span class="chip">Open3D</span>
+            <span class="chip">FastAPI</span><span class="chip">Docker</span>
+            <span class="chip">ClearML</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-when">May 2020 — Jun 2023</div>
+        <div>
+          <h3 class="tl-role">Computer Vision Engineer, freelance</h3>
+          <p class="tl-org"><a href="https://www.upwork.com/freelancers/~01cc91a4534c0c1d1a">Upwork</a> · remote</p>
+          <ul class="tl-body">
+            <li>Top Rated across 60 contracts for 35 clients in Europe, North America, Asia
+            and Africa — 4.9/5 average client rating, with a perfect 5.0 on 37 of the 40
+            rated engagements.</li>
+            <li>Over half that work — 35 of 60 contracts — came from clients who came back,
+            including advisory relationships sustained 28 to 30 months across learned video
+            compression, model analysis and 3D reconstruction.</li>
+            <li>Object detection, instance segmentation and tracking, biomedical and X-ray
+            image analysis, 3D pose estimation and reconstruction, out-of-distribution
+            detection, GANs, and research engineering for an AAAI 2023 submission.</li>
+            <li>Worked directly with founders and researchers: scoped the problem, picked
+            the approach, handed over trained models with inference code and documentation.
+            Still take selected projects alongside my Track32 work.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">PyTorch</span><span class="chip">TensorFlow</span>
+            <span class="chip">Keras</span><span class="chip">OpenCV</span>
+            <span class="chip">ONNX</span><span class="chip">Google Cloud Vision</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-when">Sep 2020 — May 2023</div>
+        <div>
+          <h3 class="tl-role">Research Assistant</h3>
+          <p class="tl-org">Shanghai Jiao Tong University · Shanghai, China</p>
+          <ul class="tl-body">
+            <li>Doctoral research on self-supervised depth and scene-flow estimation from
+            monocular video. First-authored a lightweight depth network with decoupled body
+            and edge supervision, published in <em>Image and Vision Computing</em>.</li>
+            <li>Co-authored five further papers on action recognition, text detection,
+            re-identification, face hallucination and pose estimation.</li>
+            <li>Teaching assistant, <em>Digital Image Processing</em> (Fall 2020).</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">PyTorch</span><span class="chip">CUDA</span>
+            <span class="chip">Multi-GPU</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-when">Apr 2019 — Sep 2019</div>
+        <div>
+          <h3 class="tl-role">Algorithm Intern</h3>
+          <p class="tl-org">Versa Inc. · Shanghai, China</p>
+          <ul class="tl-body">
+            <li>Built a real-time instance segmentation model that beat the state of the art
+            on the speed/accuracy curve for mobile hardware.</li>
+            <li>Exported it through ONNX and CoreML and shipped it with the iOS team into the
+            company’s flagship app, which had over 10 million users.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">PyTorch</span><span class="chip">ONNX</span>
+            <span class="chip">CoreML</span><span class="chip">C++</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tl-item">
+        <div class="tl-when">Jun 2015 — Aug 2017</div>
+        <div>
+          <h3 class="tl-role">Software Engineer</h3>
+          <p class="tl-org">Platalytics Inc. · Lahore, Pakistan</p>
+          <ul class="tl-body">
+            <li>Built an Apache Spark based analytics platform for large-scale ingestion,
+            exploration, machine learning and NLP, with one-click model deployment and scaling.</li>
+            <li>Wrote the storage connectors (HDFS, HBase, Cassandra, MongoDB) and exposed the
+            ML and NLP components as production REST APIs.</li>
+          </ul>
+          <div class="chips">
+            <span class="chip">Scala</span><span class="chip">Java</span>
+            <span class="chip">Apache Spark</span><span class="chip">Hadoop</span>
+            <span class="chip">MongoDB</span><span class="chip">GCP</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== work -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03 — Selected work</span>
+      <h2>Projects</h2>
+      <p class="sec-sub">
+        Most of this work is commercial and lives in private repositories, so there is
+        no source to link. Descriptions are deliberately about the engineering rather
+        than the client's data.
+      </p>
+    </div>
+
+    <div class="projects">
+      <article class="proj">
+        <div class="proj-top">
+          <h3>Autonomous cultivator perception</h3>
+          <span class="proj-when">2023 — present</span>
+        </div>
+        <p class="proj-ctx">Track32 for a German agricultural machinery manufacturer · production system</p>
+        <p class="d">Real-time perception for a self-driving field cultivator. Semantic
+        segmentation of soil, plant residue and tool parts is fused with RAFT optical flow
+        and stereo depth to decide whether a tine is blocked, whether soil is accumulating,
+        and whether a tine or shear bolt is worn or broken. Runs as a ROS2 graph on an
+        embedded Jetson at 15 fps with ONNX and TensorRT inference. Includes automated
+        tine-silhouette calibration, synthetic wear-mask generation for training data, and a
+        state machine that filters transient detections before it interrupts the operator.</p>
+        <div class="chips">
+          <span class="chip">Mask2Former</span><span class="chip">RAFT</span>
+          <span class="chip">TensorRT</span><span class="chip">ROS2</span>
+          <span class="chip">Jetson</span><span class="chip">Hailo</span>
+          <span class="chip">ZED stereo</span><span class="chip">ClearML</span>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-top">
+          <h3>3D plant phenotyping platform</h3>
+          <span class="proj-when">2024 — 2026</span>
+        </div>
+        <p class="proj-ctx">Track32 · research platform turned service</p>
+        <p class="d">Turns a hand-held or cart-mounted recording of a plant into measured
+        phenotypic traits: NeRF and SLAM reconstruction, ICP registration and merging of
+        multi-sensor point clouds, 3D segmentation of plant structures, then extraction of
+        leaf shape and area, fruit count and volume, height and canopy geometry. Wrapped as
+        an asynchronous job service — FastAPI gateway, Celery workers, PostgreSQL,
+        S3-compatible storage, containerised reconstruction and segmentation stages — so
+        researchers and web clients can submit recordings and collect results.</p>
+        <div class="chips">
+          <span class="chip">NeRF</span><span class="chip">SLAM</span>
+          <span class="chip">Open3D</span><span class="chip">FastAPI</span>
+          <span class="chip">Celery</span><span class="chip">PostgreSQL</span>
+          <span class="chip">Docker</span>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-top">
+          <h3>Seedbed quality assessment</h3>
+          <span class="proj-when">2023 — 2025</span>
+        </div>
+        <p class="proj-ctx">Track32 · German publicly funded research consortium</p>
+        <p class="d">Measures how well a cultivator actually prepared the soil, from depth
+        and lidar data captured while the machine is working: surface evenness, clod-size
+        distribution and crumbling quality, computed per pass and streamed to the operator
+        display. I built the analysis backend and the ROS2 quality-of-work node, plus a Flask
+        and WebSocket HMI for live monitoring on an in-cab industrial PC.</p>
+        <div class="chips">
+          <span class="chip">ROS2</span><span class="chip">Open3D</span>
+          <span class="chip">Monocular depth</span><span class="chip">Blickfeld lidar</span>
+          <span class="chip">Flask</span><span class="chip">WebSockets</span>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-top">
+          <h3>Greenhouse trait measurement pipelines</h3>
+          <span class="proj-when">2023 — 2026</span>
+        </div>
+        <p class="proj-ctx">Track32 for plant breeders and propagators · recurring commercial runs</p>
+        <p class="d">A family of production pipelines that measure plants at breeding scale.
+        QR-anchored scale recovery and plant instance detection select the best image per
+        batch, then task-specific models extract traits: flower and bud counts from tiled
+        high-resolution YOLO inference, leaf coverage and discoloration by segmentation,
+        seedling vigour classification from 4-channel RGB and chlorophyll-fluorescence
+        images, plant height from stereo depth. Results flow back into the client's data
+        platform with automated quality assurance, CSV reporting and visual overlays for
+        human review.</p>
+        <div class="chips">
+          <span class="chip">YOLO</span><span class="chip">Mask2Former</span>
+          <span class="chip">ONNX</span><span class="chip">Dataloop</span>
+          <span class="chip">ClearML</span><span class="chip">AWS</span>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-top">
+          <h3>Multi-camera capture &amp; calibration systems</h3>
+          <span class="proj-when">2025 — 2026</span>
+        </div>
+        <p class="proj-ctx">Track32 for a greenhouse breeding client and an agricultural robotics company</p>
+        <p class="d">The data-acquisition layer everything else depends on. A multi-camera
+        OAK-D recorder (depthai v3, one pipeline per device) captures synchronised RGB,
+        stereo, depth and IMU from a rolling photocart, driven by a local FastAPI and
+        vanilla-JS operator UI with watchdogs, disk guards, automatic transfer to external
+        media and a synthetic-camera mode for development without hardware — designed so a
+        compromised recording cannot be mistaken for a good one. Alongside it, a Charuco
+        intrinsic and extrinsic calibration framework that globally optimises multi-camera
+        poses with an Open3D pose graph.</p>
+        <div class="chips">
+          <span class="chip">depthai v3</span><span class="chip">OAK-D</span>
+          <span class="chip">OpenCV</span><span class="chip">Open3D</span>
+          <span class="chip">Charuco</span><span class="chip">Pose graphs</span>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="proj-top">
+          <h3>Monocular depth with decoupled body and edge supervision</h3>
+          <span class="proj-when">2020 — 2021</span>
+        </div>
+        <p class="proj-ctx">Doctoral research · published in Image and Vision Computing</p>
+        <p class="d">A fast monocular depth network that fixes the characteristic depth
+        bleeding across object boundaries by learning body and edge regions under separate
+        supervision, then recombining them — matching much heavier baselines at a fraction of
+        the inference cost.</p>
+        <div class="chips">
+          <span class="chip">PyTorch</span><span class="chip">Self-supervision</span>
+          <span class="chip">OpenCV</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================= skills -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04 — Toolkit</span>
+      <h2>Skills</h2>
+    </div>
+
+    <dl class="skills">
+      <div class="skillrow">
+        <dt>Computer vision</dt>
+        <dd>Semantic and instance segmentation · object detection and tracking ·
+        monocular and stereo depth · optical flow · visual SLAM · NeRF ·
+        multi-view geometry · camera calibration · point-cloud registration (ICP) ·
+        pose estimation</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Deep learning</dt>
+        <dd>PyTorch · TensorFlow · Keras · Transformers (Mask2Former, DETR) ·
+        Ultralytics YOLO · ONNX · TensorRT · CUDA · OpenCV · Open3D · NumPy · SciPy</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Edge &amp; deployment</dt>
+        <dd>NVIDIA Jetson · Hailo NPU · CoreML · ROS2 Humble · Docker ·
+        quantisation and profiling · real-time pipeline optimisation</dd>
+      </div>
+      <div class="skillrow">
+        <dt>MLOps &amp; data</dt>
+        <dd>ClearML · FiftyOne · Dataloop · dataset versioning and curation ·
+        annotation workflows · automated benchmarking and QA reporting · GitLab CI</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Backend &amp; cloud</dt>
+        <dd>Python · C++ · FastAPI · Flask · Celery · Redis · PostgreSQL ·
+        MinIO/S3 · AWS · GCP · Apache Spark · Scala · Java · REST APIs</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Sensors &amp; hardware</dt>
+        <dd>ZED stereo · Intel RealSense · Azure Kinect · Luxonis OAK-D (depthai) ·
+        Orbbec · Blickfeld lidar · IDS Peak GigE · chlorophyll-fluorescence imaging ·
+        IMU and GNSS integration</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Also</dt>
+        <dd>Kotlin and Android (Jetpack Compose, Room, Hilt) · Git · Linux · bash ·
+        LaTeX · working with non-technical stakeholders</dd>
+      </div>
+      <div class="skillrow">
+        <dt>Languages</dt>
+        <dd>English (fluent) · Urdu and Punjabi (native) · Dutch (A2, improving) ·
+        Mandarin (beginner)</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ======================================================= publications -->
+<section id="publications">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05 — Research output</span>
+      <h2>Publications</h2>
+      <p class="sec-sub">
+        Five peer-reviewed papers and one preprint from my master's and doctoral research
+        at Shanghai Jiao Tong University. Titles link to a scholarly search.
+      </p>
+    </div>
+
+    <div class="pubs">
+      <article class="pub">
+        <div class="pub-year">2022</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://scholar.google.com/scholar?q=Enhanced+discriminative+graph+convolutional+network+with+adaptive+temporal+modelling+for+skeleton-based+action+recognition">Enhanced discriminative graph convolutional network with adaptive temporal modelling for skeleton-based action recognition</a>
+            <span class="badge">Journal</span>
+          </div>
+          <div class="pub-meta">Tamam Alsarhan, <span class="me">Usman Ali</span>, Hongtao Lu ·
+          <span class="venue">Computer Vision and Image Understanding</span></div>
+        </div>
+      </article>
+
+      <article class="pub">
+        <div class="pub-year">2021</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://scholar.google.com/scholar?q=A+lightweight+network+for+monocular+depth+estimation+with+decoupled+body+and+edge+supervision">A lightweight network for monocular depth estimation with decoupled body and edge supervision</a>
+            <span class="badge">Journal</span>
+          </div>
+          <div class="pub-meta"><span class="me">Usman Ali</span>, Bayram Bayramli,
+          Tamam Alsarhan, Hongtao Lu ·
+          <span class="venue">Image and Vision Computing</span></div>
+        </div>
+      </article>
+
+      <article class="pub">
+        <div class="pub-year">2021</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://scholar.google.com/scholar?q=Text+detection+by+jointly+learning+character+and+word+regions">Text detection by jointly learning character and word regions</a>
+          </div>
+          <div class="pub-meta">Deyang Wu, <span class="me">Usman Ali</span>, Hongtao Lu ·
+          <span class="venue">ICDAR 2021</span></div>
+        </div>
+      </article>
+
+      <article class="pub">
+        <div class="pub-year">2019</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://scholar.google.com/scholar?q=Temporal+continuity+based+unsupervised+learning+for+person+re-identification">Temporal continuity based unsupervised learning for person re-identification</a>
+          </div>
+          <div class="pub-meta"><span class="me">Usman Ali</span>, Bayram Bayramli,
+          Hongtao Lu · <span class="venue">ICONIP 2019</span></div>
+        </div>
+      </article>
+
+      <article class="pub">
+        <div class="pub-year">2019</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://scholar.google.com/scholar?q=FH-GAN+Face+hallucination+and+recognition+using+generative+adversarial+network">FH-GAN: Face hallucination and recognition using generative adversarial network</a>
+          </div>
+          <div class="pub-meta">Bayram Bayramli, <span class="me">Usman Ali</span>, Te Qi,
+          Hongtao Lu · <span class="venue">ICONIP 2019</span></div>
+        </div>
+      </article>
+
+      <article class="pub">
+        <div class="pub-year">2019</div>
+        <div>
+          <div class="pub-title">
+            <a href="https://scholar.google.com/scholar?q=Spatial+shortcut+network+for+human+pose+estimation">Spatial shortcut network for human pose estimation</a>
+            <span class="badge">Preprint</span>
+          </div>
+          <div class="pub-meta">Te Qi, Bayram Bayramli, <span class="me">Usman Ali</span>,
+          Qinchuan Zhang, Hongtao Lu</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ contact -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <h2>Get in touch</h2>
+        <p>Open to conversations about computer vision and perception work — in
+        agriculture, robotics or anywhere else that geometry and deep learning have
+        to survive contact with real sensors.</p>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="mailto:aliusman.awaan@gmail.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/ualiawan">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap" style="display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;width:100%">
+    <span>© <span id="year">2026</span> Usman Ali</span>
+    <span class="spacer"></span>
+    <a href="https://github.com/ualiawan">GitHub</a>
+    <a href="https://www.linkedin.com/in/ualiawan">LinkedIn</a>
+    <a href="mailto:aliusman.awaan@gmail.com">Email</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var btn  = document.getElementById('theme');
+  var KEY  = 'ua-theme';
+
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+  } catch (e) { /* private mode: fall back to the OS preference */ }
+
+  function current(){
+    var set = root.getAttribute('data-theme');
+    if (set) return set;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  btn.addEventListener('click', function(){
+    var next = current() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    btn.setAttribute('aria-label', 'Switch to ' + (next === 'dark' ? 'light' : 'dark') + ' theme');
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Reveal the CV download only once the PDF is actually published, so a missing
+  // build never becomes a broken primary action. file:// cannot be probed, so the
+  // link is shown optimistically during local preview.
+  var cv = document.getElementById('cvlink');
+  if (cv) {
+    if (location.protocol === 'file:') {
+      cv.hidden = false;
+    } else {
+      fetch(cv.getAttribute('href'), { method: 'HEAD' })
+        .then(function (r) { if (r.ok) cv.hidden = false; })
+        .catch(function () { /* leave it hidden */ });
+    }
+  }
+})();
+</script>
+</body>
+</html>
